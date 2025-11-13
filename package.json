@@ -1,0 +1,35 @@
+{
+  "name": "@li0ard/jp2",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "author": "li0ard",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/li0ard/jp2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/li0ard/jp2/issues"
+  },
+  "homepage": "https://github.com/li0ard/jp2#readme",
+  "description": "Convert JPEG2000 to PNG",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf dist/ && tsc --project tsconfig.build.json"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@pdf-lib/upng": "^1.0.1"
+  },
+  "files": ["dist"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": ["jpeg2000", "emrtd", "png"]
+}
