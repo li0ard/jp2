@@ -6,8 +6,7 @@ import UPNG from "@pdf-lib/upng";
  * @param data JPEG2000 buffer
  */
 export const jp2ToPNG = (data: Uint8Array): Uint8Array[] => {
-    const jpx = new JpxImage();
-    jpx.parse(data);
+    const jpx = new JpxImage(data);
     const result: Uint8Array[] = [];
     for(let tile of jpx.tiles) {
         const rgba = new Uint8Array(tile.width * tile.height * 4);
@@ -17,8 +16,11 @@ export const jp2ToPNG = (data: Uint8Array): Uint8Array[] => {
             rgba[j+2] = tile.items[i+2];
             rgba[j+3] = 255;
         }
-        result.push(new Uint8Array(UPNG.encode([rgba.buffer as ArrayBuffer], tile.width, tile.height, 0)))
+        result.push(new Uint8Array(UPNG.encode([rgba.buffer as ArrayBuffer], tile.width, tile.height, 0)));
     }
 
     return result;
 }
+
+await Bun.write("EF_DG2.png", jp2ToPNG(await Bun.file("./EF_DG2.jp2").bytes()))
+await Bun.write("NM1.png", jp2ToPNG(await Bun.file("./NM1.j2k").bytes()))

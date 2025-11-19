@@ -22,26 +22,26 @@ class JpxError extends Error {
 }
 
 export class JpxImage {
-    failOnCorruptedImage;
+    failOnCorruptedImage = false;
     tiles;
     width;
     height;
     componentsCount;
 
-    constructor() { this.failOnCorruptedImage = false; }
-    parse(data) {
-        let head = readUint16(data, 0);
+    constructor(data) {
+        const head = readUint16(data, 0);
         // No box header, immediate start of codestream (SOC)
         if (head === 0xff4f) {
             this.parseCodestream(data, 0, data.length);
             return;
         }
 
-        let position = 0, length = data.length;
+        let position = 0;
+        const length = data.length;
         while (position < length) {
             let headerSize = 8;
             let lbox = readUint32(data, position);
-            let tbox = readUint32(data, position + 4);
+            const tbox = readUint32(data, position + 4);
             position += headerSize;
             if (lbox === 1) {
                 // XLBox: read UInt64 according to spec.
@@ -52,7 +52,7 @@ export class JpxImage {
             }
             if (lbox === 0) lbox = length - position + headerSize;
             if (lbox < headerSize) throw new JpxError("Invalid box field size");
-            let dataLength = lbox - headerSize;
+            const dataLength = lbox - headerSize;
             let jumpDataLength = true;
             switch (tbox) {
                 case 0x6a703268: // 'jp2h'

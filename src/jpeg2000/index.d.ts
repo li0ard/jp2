@@ -9,7 +9,7 @@ export interface Tile {
 }
   
 export declare class JpxImage {
-    parse: (data: Uint8Array) => void;
+    constructor(data: Uint8Array);
     width: number;
     height: number;
     componentsCount: number;
