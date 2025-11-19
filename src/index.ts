@@ -21,6 +21,3 @@ export const jp2ToPNG = (data: Uint8Array): Uint8Array[] => {
 
     return result;
 }
-
-await Bun.write("EF_DG2.png", jp2ToPNG(await Bun.file("./EF_DG2.jp2").bytes()))
-await Bun.write("NM1.png", jp2ToPNG(await Bun.file("./NM1.j2k").bytes()))
