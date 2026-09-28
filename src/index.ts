@@ -1,14 +1,13 @@
-import { JpxImage } from './jpeg2000/index.js';
+import { JpxImage, type Tile } from './jpeg2000/index.js';
 import UPNG from "@pdf-lib/upng";
 
-/**
- * Convert JPEG2000 (`.jp2`) to PNG
- * @param data JPEG2000 buffer
- */
+/** Convert JPEG2000 (`.jp2`) to RAW tiles (Raw RGB pixels) */
+export const jp2ToRaw = (data: Uint8Array): Tile[] => new JpxImage(data).tiles;
+
+/** Convert JPEG2000 (`.jp2`) to PNG */
 export const jp2ToPNG = (data: Uint8Array): Uint8Array[] => {
-    const jpx = new JpxImage(data);
     const result: Uint8Array[] = [];
-    for(let tile of jpx.tiles) {
+    for(let tile of jp2ToRaw(data)) {
         const rgba = new Uint8Array(tile.width * tile.height * 4);
         for (let i = 0, j = 0; i < tile.items.length; i += 3, j += 4) {
             rgba[j] = tile.items[i];
@@ -16,7 +15,7 @@ export const jp2ToPNG = (data: Uint8Array): Uint8Array[] => {
             rgba[j+2] = tile.items[i+2];
             rgba[j+3] = 255;
         }
-        result.push(new Uint8Array(UPNG.encode([rgba.buffer as ArrayBuffer], tile.width, tile.height, 0)));
+        result.push(new Uint8Array(UPNG.encode([rgba.buffer], tile.width, tile.height, 0)));
     }
 
     return result;
